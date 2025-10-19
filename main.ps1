@@ -1,32 +1,34 @@
 # main.ps1
 
-# Caminhos relativos
-$InjectorDir = ".\tcc_injector"
-$AdapterDir = ".\tcc_adapter"
-
+# Caminhos absolutos baseados no diretório do script
+$InjectorDir = Join-Path $PSScriptRoot "tcc_injector"
+$AdaptersRootDir = Join-Path $PSScriptRoot "tcc_adapters"
 
 function Start-DockerCompose($dir) {
-    if (Test-Path "$dir\docker-compose.yml") {
+    if (Test-Path (Join-Path $dir "docker-compose.yaml")) {
         Write-Host "Subindo docker-compose em $dir"
         Push-Location $dir
-        docker-compose up -d --build
-        Pop-Location
+        try {
+            docker-compose up -d --build
+        } finally {
+            Pop-Location
+        }
     } else {
         Write-Host "Nenhum docker-compose encontrado em $dir"
     }
 }
 
-Write-Host "===== Iniciando Injector ====="
-Push-Location $InjectorDir
-docker-compose up -d --build
-Pop-Location
+# --- Rodar injector ---
+Write-Host "===== Starting Injector ====="
+Start-DockerCompose $InjectorDir
 
-# --- Rodar adapters ---
-Write-Host "===== Iniciando Adapters ====="
-# Percorre todas as subpastas de tcc_adapter
-Get-ChildItem -Directory $AdapterDir | ForEach-Object {
-    $subdir = $_.FullName
-    Start-DockerCompose $subdir
+# --- Rodar todos os adapters ---
+Write-Host "===== Starting Adapters ====="
+
+# Pega todas as subpastas de tcc_adapters
+$adapterDirs = Get-ChildItem -Path $AdaptersRootDir -Directory
+
+foreach ($dir in $adapterDirs) {
+    Write-Host $dir
+    Start-DockerCompose $dir.FullName
 }
-
-Write-Host "✅ Todos os serviços iniciados"

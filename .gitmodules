@@ -1,0 +1,3 @@
+[submodule "tcc_analisador"]
+	path = tcc_analisador
+	url = https://github.com/JamzMarks/tcc_analisador.git

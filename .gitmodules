@@ -1,3 +1,9 @@
 [submodule "tcc_analisador"]
 	path = tcc_analisador
 	url = https://github.com/JamzMarks/tcc_analisador.git
+[submodule "submodules/orquestrador"]
+	path = submodules/orquestrador
+	url = https://github.com/JamzMarks/tcc_orquestrador.git
+[submodule "tcc_orquestrador"]
+	path = tcc_orquestrador
+	url = https://github.com/JamzMarks/tcc_orquestrador.git

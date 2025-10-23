@@ -3,6 +3,7 @@
 # Caminhos absolutos baseados no diretório do script
 $InjectorDir = Join-Path $PSScriptRoot "tcc_injector"
 $AdaptersRootDir = Join-Path $PSScriptRoot "tcc_adapters"
+$AnalyserDir = Join-Path $PSScriptRoot "tcc_analisador"
 
 function Start-DockerCompose($dir) {
     if (Test-Path (Join-Path $dir "docker-compose.yaml")) {
@@ -21,6 +22,10 @@ function Start-DockerCompose($dir) {
 # --- Rodar injector ---
 Write-Host "===== Starting Injector ====="
 Start-DockerCompose $InjectorDir
+
+# --- Rodar injector ---
+Write-Host "===== Starting Injector ====="
+Start-DockerCompose $AnalyserDir
 
 # --- Rodar todos os adapters ---
 Write-Host "===== Starting Adapters ====="
